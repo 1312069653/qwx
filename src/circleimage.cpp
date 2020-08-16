@@ -2,6 +2,8 @@
 
 #include "circleimage.h"
 
+#include <QPainterPath>
+
 CircleImage::CircleImage(QQuickItem* parent)
   : QQuickPaintedItem(parent), 
     m_color(Qt::white), 

@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2015 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 import QtQuick 2.2
@@ -31,7 +32,7 @@ Item {
         id: modContactListView
         anchors.fill: parent
         delegate: Item {
-            width: parent.width; height: 60
+            width: modContactListView.width; height: 60
 
             HeadImg {                                                              
                 v2: Global.v2

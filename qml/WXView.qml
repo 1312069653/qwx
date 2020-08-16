@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2015 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 import QtQuick 2.2
@@ -61,7 +62,11 @@ Item {
         id: getMsgObj
         onSyncKeyChanged: {
             if (getMsgObj.syncKey.length == 0) {
-                processObj.arguments = [qsTr("WeChat Qt frontend"), qsTr("Disconnected! Please login again"), '-i', '/usr/share/icons/hicolor/64x64/apps/qwx.png', '-t', '13000'];
+		processObj.arguments = [qsTr("WeChat Qt frontend"),
+		                        qsTr("Disconnected! Please login again"),
+					'-i',
+					'/usr/share/icons/hicolor/64x64/apps/qwx.png',
+				       	'-t', '13000'];
                 processObj.start();
                 rootWindowStackView.clear(); 
                 rootWindowStackView.push({item: Qt.resolvedUrl("SplashView.qml")});
@@ -106,7 +111,9 @@ Item {
             }
 
             if (nickName != "") {
-                processObj.arguments = [nickName, content, '-i', '/usr/share/icons/hicolor/64x64/apps/qwx.png', '-t', '3000'];
+		processObj.arguments = [nickName, content, '-i',
+		                        '/usr/share/icons/hicolor/64x64/apps/qwx.png',
+				       	'-t', '3000'];
                 processObj.start();
             }
 
@@ -125,22 +132,22 @@ Item {
                 var awayMsg = "不在，请在滴声后留言[咖啡] 消息来自qwx https://github.com/xiangzhai/qwx 若打扰到您，请回复内容back，暂时屏蔽自动回复";
                 if (Global.v2) {
                     sendMsgObj.sendV2(Global.uin,
-                            Global.sid,                                          
-                            Global.skey,
-                            Global.deviceId, 
-                            toUserName,                                 
-                            fromUserName,                                   
-                            contactObj.getNickName(Global.loginUserName) + awayMsg,
-                            Global.syncKey)                                      
+                                      Global.sid,
+                                      Global.skey,
+                                      Global.deviceId,
+                                      toUserName,
+                                      fromUserName,
+                                      contactObj.getNickName(Global.loginUserName) + awayMsg,
+                                      Global.syncKey)
                 } else {
                     sendMsgObj.send(Global.uin,
-                                Global.sid,
-                                Global.skey,
-                                Global.deviceId,
-                                toUserName,
-                                fromUserName,
-                                contactObj.getNickName(Global.loginUserName) + awayMsg,
-                                Global.syncKey)
+                                    Global.sid,
+                                    Global.skey,
+                                    Global.deviceId,
+                                    toUserName,
+                                    fromUserName,
+                                    contactObj.getNickName(Global.loginUserName) + awayMsg,
+                                    Global.syncKey)
                 }
             }
         }
@@ -152,7 +159,7 @@ Item {
         anchors.fill: parent
 
         delegate: Item {
-            width: parent.width; height: 60
+            width: wxView.width; height: 60
 
             HeadImg {
                 id: headImgObj
