@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef XIAODOUBI_H
@@ -5,7 +6,7 @@
 
 #include "httpget.h"
 
-class XiaoDouBi : public HttpGet 
+class XiaoDouBi : public HttpGet
 {
     Q_OBJECT
 

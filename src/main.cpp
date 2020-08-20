@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2016 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #include <QtQml>
@@ -29,8 +30,8 @@
 #include "i18n.h"
 #include "clipboard.h"
 
-int main(int argc, char* argv[]) 
-{                                                                        
+int main(int argc, char* argv[])
+{
     QtSingleApplication app(argc, argv);
 
     if (app.isRunning())
@@ -47,31 +48,34 @@ int main(int argc, char* argv[])
     I18N i18n(TRANSLATIONS_PATH, APPLICATION_ENCODING);
     i18n.translate();
 
-    qmlRegisterType<QwxUUID>("cn.com.isoft.qwx", 1, 0, "QwxUUID");
-    qmlRegisterType<Scan>("cn.com.isoft.qwx", 1, 0, "Scan");
-    qmlRegisterType<Cookie>("cn.com.isoft.qwx", 1, 0, "Cookie");
-    qmlRegisterType<StatReport>("cn.com.isoft.qwx", 1, 0, "StatReport");
-    qmlRegisterType<Init>("cn.com.isoft.qwx", 1, 0, "Init");
-    qmlRegisterType<Sync>("cn.com.isoft.qwx", 1, 0, "Sync");
-    qmlRegisterType<Contact>("cn.com.isoft.qwx", 1, 0, "Contact");
-    qmlRegisterType<HeadImg>("cn.com.isoft.qwx", 1, 0, "HeadImg");
-    qmlRegisterType<StatusNotify>("cn.com.isoft.qwx", 1, 0, "StatusNotify");
-    qmlRegisterType<SendMsg>("cn.com.isoft.qwx", 1, 0, "SendMsg");
-    qmlRegisterType<Monitor>("cn.com.isoft.qwx", 1, 0, "Monitor");
-    qmlRegisterType<GetMsg>("cn.com.isoft.qwx", 1, 0, "GetMsg");
-    qmlRegisterType<CircleImage>("cn.com.isoft.qwx", 1, 0, "CircleImage");
-    qmlRegisterType<Process>("cn.com.isoft.qwx", 1, 0, "Process");
-    qmlRegisterType<XiaoDouBi>("cn.com.isoft.qwx", 1, 0, "XiaoDouBi");
-    qmlRegisterType<ChatLog>("cn.com.isoft.qwx", 1, 0, "ChatLog");
-    qmlRegisterType<Emotion>("cn.com.isoft.qwx", 1, 0, "Emotion");
-    qmlRegisterType<LogOut>("cn.com.isoft.qwx", 1, 0, "LogOut");
-    qmlRegisterType<IpCity>("cn.com.isoft.qwx", 1, 0, "IpCity");
-    qmlRegisterType<Weather>("cn.com.isoft.qwx", 1, 0, "Weather");
-    qmlRegisterType<Clipboard>("cn.com.isoft.qwx", 1, 0, "Clipboard");
+    const char*        uri = "cn.com.isoft.qwx";
+    const int versionMajor = 1;
+    const int versionMinor = 0;
+    qmlRegisterType<QwxUUID>(uri, versionMajor, versionMinor, "QwxUUID");
+    qmlRegisterType<Scan>(uri, versionMajor, versionMinor, "Scan");
+    qmlRegisterType<Cookie>(uri, versionMajor, versionMinor, "Cookie");
+    qmlRegisterType<StatReport>(uri, versionMajor, versionMinor, "StatReport");
+    qmlRegisterType<Init>(uri, versionMajor, versionMinor, "Init");
+    qmlRegisterType<Sync>(uri, versionMajor, versionMinor, "Sync");
+    qmlRegisterType<Contact>(uri, versionMajor, versionMinor, "Contact");
+    qmlRegisterType<HeadImg>(uri, versionMajor, versionMinor, "HeadImg");
+    qmlRegisterType<StatusNotify>(uri, versionMajor, versionMinor, "StatusNotify");
+    qmlRegisterType<SendMsg>(uri, versionMajor, versionMinor, "SendMsg");
+    qmlRegisterType<Monitor>(uri, versionMajor, versionMinor, "Monitor");
+    qmlRegisterType<GetMsg>(uri, versionMajor, versionMinor, "GetMsg");
+    qmlRegisterType<CircleImage>(uri, versionMajor, versionMinor, "CircleImage");
+    qmlRegisterType<Process>(uri, versionMajor, versionMinor, "Process");
+    qmlRegisterType<XiaoDouBi>(uri, versionMajor, versionMinor, "XiaoDouBi");
+    qmlRegisterType<ChatLog>(uri, versionMajor, versionMinor, "ChatLog");
+    qmlRegisterType<Emotion>(uri, versionMajor, versionMinor, "Emotion");
+    qmlRegisterType<LogOut>(uri, versionMajor, versionMinor, "LogOut");
+    qmlRegisterType<IpCity>(uri, versionMajor, versionMinor, "IpCity");
+    qmlRegisterType<Weather>(uri, versionMajor, versionMinor, "Weather");
+    qmlRegisterType<Clipboard>(uri, versionMajor, versionMinor, "Clipboard");
 
-    QQmlApplicationEngine engine(QUrl("qrc:/qml/main.qml")); 
+    QQmlApplicationEngine engine(QUrl("qrc:/qml/main.qml"));
     QObject* topLevel = engine.rootObjects().value(0);
-    QQuickWindow* window = qobject_cast<QQuickWindow*>(topLevel); 
+    QQuickWindow* window = qobject_cast<QQuickWindow*>(topLevel);
     if (!window) {
         qWarning("Error: Your root item has to be a Window.");
         return -1;

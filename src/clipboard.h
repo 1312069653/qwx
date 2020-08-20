@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2015 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef CLIPBOARD_H
@@ -15,11 +16,9 @@ public:
 
     Q_INVOKABLE QString text();
 
-    /**
-     * This is just to put text on the clipboard.
-     */
+    // This is just to put text on the clipboard.
     Q_INVOKABLE void copy(QString text);
-    
+
 private:
     QClipboard* m_clipboard;
 };

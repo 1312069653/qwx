@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2016 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef GET_MSG_H
@@ -5,7 +6,7 @@
 
 #include "httppost.h"
 
-class GetMsg : public HttpPost 
+class GetMsg : public HttpPost
 {
     Q_OBJECT
 
@@ -18,24 +19,34 @@ public:
     GetMsg(HttpPost* parent = nullptr);
     ~GetMsg();
 
+    enum MSG_TYPE {
+        MSG_IMG        = 3,
+	MSG_VOICE      = 34,
+	MSG_VIEW_PHONE = 49,
+	MSG_TAP_PHONE  = 51,
+       	MSG_VIDEO      = 62,
+	MSG_WITHDRAW   = 10002,
+	MSG_UNKNOWN
+    };
+
     QString fromUserName() const { return m_fromUserName; }
     void setFromUserName(const QString & fromUserName);
 
     QString toUserName() const { return m_toUserName; }
     void setToUserName(const QString & toUserName);
-    
+
     QStringList syncKey() const { return m_syncKey; }
 
     bool needSaveLog() const { return m_needSaveLog; }
     void setNeedSaveLog(bool needSaveLog);
 
-    Q_INVOKABLE void post(QString uin, 
-                          QString sid, 
-                          QString skey, 
+    Q_INVOKABLE void post(QString uin,
+                          QString sid,
+                          QString skey,
                           QStringList syncKey);
-    Q_INVOKABLE void postV2(QString uin, 
-                            QString sid, 
-                            QString skey, 
+    Q_INVOKABLE void postV2(QString uin,
+                            QString sid,
+                            QString skey,
                             QStringList syncKey);
     Q_INVOKABLE QString contentWithoutUserName(QString content);
     Q_INVOKABLE QString contentToUserName(QString content, QString oriUserName);
@@ -55,10 +66,10 @@ protected:
 
 private:
     void m_saveLog(QString createTimeStr, QString fromUserName, QString content);
-    void m_post(QString host, 
-                QString uin, 
-                QString sid, 
-                QString skey, 
+    void m_post(QString host,
+                QString uin,
+                QString sid,
+                QString skey,
                 QStringList syncKey);
     void m_handleNewMsg(QString msgId,
                         QString content,

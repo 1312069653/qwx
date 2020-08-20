@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef WEATHER_H
@@ -5,7 +6,7 @@
 
 #include "httpget.h"
 
-class Weather : public HttpGet 
+class Weather : public HttpGet
 {
     Q_OBJECT
 

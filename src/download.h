@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2016 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef DOWNLOAD_H
@@ -9,7 +10,7 @@
 #include <QNetworkCookie>
 #include <QFile>
 
-class Download : public QObject 
+class Download : public QObject
 {
     Q_OBJECT
 

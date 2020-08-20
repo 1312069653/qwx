@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2015 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef SYNC_H
@@ -5,7 +6,7 @@
 
 #include "httppost.h"
 
-class Sync : public HttpPost 
+class Sync : public HttpPost
 {
     Q_OBJECT
 
@@ -17,13 +18,13 @@ public:
 
     QStringList syncKey() const { return m_syncKey; }
 
-    Q_INVOKABLE void post(QString uin, 
-                          QString sid, 
-                          QString skey, 
+    Q_INVOKABLE void post(QString uin,
+                          QString sid,
+                          QString skey,
                           QStringList syncKey);
-    Q_INVOKABLE void postV2(QString uin, 
-                            QString sid, 
-                            QString skey, 
+    Q_INVOKABLE void postV2(QString uin,
+                            QString sid,
+                            QString skey,
                             QStringList syncKey);
 
 Q_SIGNALS:
@@ -34,10 +35,10 @@ protected:
     void finished(QNetworkReply* reply);
 
 private:
-    void m_post(QString host, 
-                QString uin, 
-                QString sid, 
-                QString skey, 
+    void m_post(QString host,
+                QString uin,
+                QString sid,
+                QString skey,
                 QStringList syncKey);
 
 private:

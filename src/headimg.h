@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2016 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef HEAD_IMG_H
@@ -5,7 +6,7 @@
 
 #include "download.h"
 
-class HeadImg : public QObject 
+class HeadImg : public QObject
 {
     Q_OBJECT
 

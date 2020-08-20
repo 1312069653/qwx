@@ -1,8 +1,8 @@
 // Copyright (C) 2014 - 2019 Leslie Zhai <zhaixiang@loongson.cn>
 
 #include <QFile>
-#include <QJsonDocument>                                                           
-#include <QJsonObject>                                                             
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QJsonArray>
 #include <QStandardPaths>
 #include <time.h>
@@ -11,7 +11,7 @@
 #include "download.h"
 #include "globaldeclarations.h"
 
-GetMsg::GetMsg(HttpPost* parent) 
+GetMsg::GetMsg(HttpPost* parent)
   : HttpPost(parent)
 {
 #if QWX_DEBUG
@@ -19,14 +19,14 @@ GetMsg::GetMsg(HttpPost* parent)
 #endif
 }
 
-GetMsg::~GetMsg() 
+GetMsg::~GetMsg()
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
 #endif
 }
 
-void GetMsg::setFromUserName(const QString & fromUserName) 
+void GetMsg::setFromUserName(const QString & fromUserName)
 {
     if (m_fromUserName != fromUserName) {
         m_fromUserName = fromUserName;
@@ -34,7 +34,7 @@ void GetMsg::setFromUserName(const QString & fromUserName)
     }
 }
 
-void GetMsg::setToUserName(const QString & toUserName) 
+void GetMsg::setToUserName(const QString & toUserName)
 {
     if (m_toUserName != toUserName) {
         m_toUserName = toUserName;
@@ -42,7 +42,7 @@ void GetMsg::setToUserName(const QString & toUserName)
     }
 }
 
-void GetMsg::setNeedSaveLog(bool needSaveLog) 
+void GetMsg::setNeedSaveLog(bool needSaveLog)
 {
     if (m_needSaveLog != needSaveLog) {
         m_needSaveLog = needSaveLog;
@@ -50,22 +50,22 @@ void GetMsg::setNeedSaveLog(bool needSaveLog)
     }
 }
 
-void GetMsg::m_post(QString host, 
-                    QString uin, 
-                    QString sid, 
-                    QString skey, 
-                    QStringList syncKey) 
+void GetMsg::m_post(QString host,
+                    QString uin,
+                    QString sid,
+                    QString skey,
+                    QStringList syncKey)
 {
     m_skey = skey;
     QString ts = QString::number(time(NULL));
-    QString url = host + WX_CGI_PATH + "webwxsync?sid=" + sid + 
-        "&skey=" + m_skey + "&r=" + ts;
+    QString url = host + WX_CGI_PATH + "webwxsync?sid=" + sid +
+                  "&skey=" + m_skey + "&r=" + ts;
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << url;
 #endif
-    QString json = "{\"BaseRequest\":{\"Uin\":" + uin + ",\"Sid\":\"" + sid + 
-        "\"},\"SyncKey\":{\"Count\":" + QString::number(syncKey.size()) + 
-        ",\"List\":[";
+    QString json = "{\"BaseRequest\":{\"Uin\":" + uin + ",\"Sid\":\"" + sid +
+                   "\"},\"SyncKey\":{\"Count\":" + QString::number(syncKey.size()) +
+                   ",\"List\":[";
     for (int i = 0; i < syncKey.size(); i++) {
         if (i != 0)
             json += ",";
@@ -79,7 +79,7 @@ void GetMsg::m_post(QString host,
     HttpPost::post(url, json, true);
 }
 
-void GetMsg::post(QString uin, QString sid, QString skey, QStringList syncKey) 
+void GetMsg::post(QString uin, QString sid, QString skey, QStringList syncKey)
 {
     m_post(WX_SERVER_HOST, uin, sid, skey, syncKey);
 }
@@ -90,7 +90,7 @@ void GetMsg::postV2(QString uin, QString sid, QString skey, QStringList syncKey)
     m_post(WX_V2_SERVER_HOST, uin, sid, skey, syncKey);
 }
 
-QString GetMsg::contentWithoutUserName(QString content) 
+QString GetMsg::contentWithoutUserName(QString content)
 {
     if (content.startsWith("@"))
         content = content.mid(content.indexOf(":<br/>") + QString(":<br/>").size());
@@ -101,15 +101,15 @@ QString GetMsg::contentWithoutUserName(QString content)
     return content;
 }
 
-QString GetMsg::contentToUserName(QString content, QString oriUserName) 
+QString GetMsg::contentToUserName(QString content, QString oriUserName)
 {
-    if (content.startsWith("@")) 
+    if (content.startsWith("@"))
         return content.left(content.indexOf(":<br/>"));
 
     return oriUserName;
 }
 
-void GetMsg::m_saveLog(QString createTimeStr, QString fromUserName, QString content) 
+void GetMsg::m_saveLog(QString createTimeStr, QString fromUserName, QString content)
 {
     QFile file(QWXDIR + "/" + fromUserName + ".txt");
     if (file.open(QIODevice::Append | QIODevice::Text)) {
@@ -151,7 +151,7 @@ void GetMsg::m_handleNewMsg(QString msgId,
     m_map.insert(msgId, createTime);
 }
 
-void GetMsg::finished(QNetworkReply* reply) 
+void GetMsg::finished(QNetworkReply* reply)
 {
     QString replyStr = QString(reply->readAll());
 #if QWX_DEBUG
@@ -181,11 +181,12 @@ void GetMsg::finished(QNetworkReply* reply)
 
         if (content.contains("msg")) {
             content = "";
-            if (msgType == 3) {
+            if (msgType == MSG_IMG) {
                 QString url = m_v2 ? WX_V2_SERVER_HOST : WX_SERVER_HOST +
-                    WX_CGI_PATH + "webwxgetmsgimg?MsgID=" + msgId + "&skey=" +
-                    m_skey;
-                QString msgImgPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation) + "/img_" + msgId + ".jpg";
+                              WX_CGI_PATH + "webwxgetmsgimg?MsgID=" + msgId +
+			      "&skey=" + m_skey;
+                QString msgImgPath = QStandardPaths::writableLocation(
+			      QStandardPaths::PicturesLocation) + "/img_" + msgId + ".jpg";
                 Download *downLoad = new Download;
                 downLoad->get(url, msgImgPath, true, false);
                 connect(downLoad, &Download::finished, [=] {
@@ -195,11 +196,12 @@ void GetMsg::finished(QNetworkReply* reply)
                         toUserNameStr, time(nullptr));
                     downLoad->deleteLater();
                 });
-            } else if (msgType == 34) {
+            } else if (msgType == MSG_VOICE) {
                 QString url = m_v2 ? WX_V2_SERVER_HOST : WX_SERVER_HOST +
                     WX_CGI_PATH + "webwxgetvoice?msgid=" + msgId + "&skey=" +
                     m_skey;
-                QString msgVoicePath = QStandardPaths::writableLocation(QStandardPaths::MusicLocation) + "/voice_" + msgId + ".mp3";
+                QString msgVoicePath = QStandardPaths::writableLocation(
+			      QStandardPaths::MusicLocation) + "/voice_" + msgId + ".mp3";
                 Download *downLoad = new Download;
                 downLoad->get(url, msgVoicePath, true, false);
                 connect(downLoad, &Download::finished, [=] {
@@ -209,7 +211,7 @@ void GetMsg::finished(QNetworkReply* reply)
                         toUserNameStr, time(nullptr));
                     downLoad->deleteLater();
                 });
-            } else if (msgType == 62) {
+            } else if (msgType == MSG_VIDEO) {
                 QString url = m_v2 ? WX_V2_SERVER_HOST : WX_SERVER_HOST +
                     WX_CGI_PATH + "webwxgetvideo?msgid=" + msgId + "&skey=" +
                     m_skey;
@@ -223,14 +225,14 @@ void GetMsg::finished(QNetworkReply* reply)
                         toUserNameStr, time(nullptr));
                     downLoad->deleteLater();
                 });
-            } else if (msgType == 49) {
+            } else if (msgType == MSG_VIEW_PHONE) {
                 content = tr("Please view it on your phone") + " <a href=\"" +
                     msg["Url"].toString() + "\">" + msg["FileName"].toString() +
                     "</a>";
-            } else if (msgType == 10002) {
+            } else if (msgType == MSG_WITHDRAW) {
                 content = tr("Withdraw a message");
-            } else if (msgType == 51) {
-                // TODO: you are tapping on your phone ;-)
+            } else if (msgType == MSG_TAP_PHONE) {
+                content = tr("you are tapping on your phone ;-)");
             } else {
                 content = tr("Unsupport MsgType %1").arg(msgType);
             }
@@ -238,7 +240,7 @@ void GetMsg::finished(QNetworkReply* reply)
 
         m_handleNewMsg(msgId, content, fromUserNameStr, toUserNameStr, createTime);
     }
-    
+
     m_syncKey.clear();
     Q_FOREACH (const QJsonValue & val, obj["SyncKey"].toObject()["List"].toArray()) {
         m_syncKey.append(QString::number(val.toObject()["Key"].toInt()) + "|" + 

@@ -3,8 +3,8 @@
 #if QWX_DEBUG
 #include <QFile>
 #endif
-#include <QJsonDocument>                                                           
-#include <QJsonObject>                                                             
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QJsonArray>
 
 #include <random>
@@ -14,7 +14,7 @@
 #include "userobject.h"
 #include "globaldeclarations.h"
 
-Init::Init(HttpPost* parent) 
+Init::Init(HttpPost* parent)
   : HttpPost(parent),
     m_v2(false)
 {
@@ -27,7 +27,7 @@ Init::Init(HttpPost* parent)
     Q_EMIT deviceIdChanged();
 }
 
-Init::~Init() 
+Init::~Init()
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
@@ -35,7 +35,7 @@ Init::~Init()
     m_clear();
 }
 
-void Init::m_clear() 
+void Init::m_clear()
 {
     Q_FOREACH (QObject* obj, m_contactList) {
         if (obj) {
@@ -47,16 +47,16 @@ void Init::m_clear()
     m_map.clear();
 }
 
-void Init::post(QString uin, QString sid, QString ticket) 
+void Init::post(QString uin, QString sid, QString ticket)
 {
     m_clear();
 
-    QString url = WX_SERVER_HOST + WX_CGI_PATH + "webwxinit?pass_ticket=" + 
+    QString url = WX_SERVER_HOST + WX_CGI_PATH + "webwxinit?pass_ticket=" +
         ticket + "&r=" + QString::number(time(NULL));
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << url;
 #endif
-    QString json = "{\"BaseRequest\":{\"Uin\":\"" + uin + "\",\"Sid\":\"" + 
+    QString json = "{\"BaseRequest\":{\"Uin\":\"" + uin + "\",\"Sid\":\"" +
         sid + "\",\"Skey\":\"\",\"DeviceID\":\"" + m_deviceId + "\"}}";
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << json;
@@ -83,16 +83,16 @@ void Init::postV2(QString uin, QString sid, QString ticket)
     HttpPost::post(url, json, true);
 }
 
-QString Init::loginHeadImgUrl() const 
-{ 
+QString Init::loginHeadImgUrl() const
+{
     return "file://" + QWXDIR + "/" + m_loginUserName;
 }
 
-void Init::finished(QNetworkReply* reply) 
+void Init::finished(QNetworkReply* reply)
 {
     QString replyStr = QString(reply->readAll());
 #if QWX_DEBUG
-    QFile file("init.json"); 
+    QFile file("init.json");
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&file);
         out << replyStr;
@@ -102,7 +102,7 @@ void Init::finished(QNetworkReply* reply)
     qDebug() << "DEBUG:" << replyStr;
 #endif
 
-    QJsonDocument doc = QJsonDocument::fromJson(replyStr.toUtf8());                
+    QJsonDocument doc = QJsonDocument::fromJson(replyStr.toUtf8());
     if (!doc.isObject()) {
         Q_EMIT error();
         return;
@@ -123,21 +123,23 @@ void Init::finished(QNetworkReply* reply)
         QString nickName = user["NickName"].toString();
         if (!m_map.contains(userName)) {
             m_contactList.append(new UserObject(
-                userName, 
-                nickName, 
-                m_v2 ? WX_V2_SERVER_HOST + user["HeadImgUrl"].toString() : WX_SERVER_HOST + user["HeadImgUrl"].toString()));
+                                         userName,
+                                         nickName,
+                                         m_v2 ? 
+					     WX_V2_SERVER_HOST + user["HeadImgUrl"].toString() :
+					     WX_SERVER_HOST + user["HeadImgUrl"].toString()));
         }
         m_map.insert(userName, nickName);
     }
     Q_EMIT contactListChanged();
 
-    QString skey = obj["SKey"].toString();                                         
-#if QWX_DEBUG                                                                      
-    qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << skey;                           
-#endif 
+    QString skey = obj["SKey"].toString();
+#if QWX_DEBUG
+    qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << skey;
+#endif
     QStringList syncKey;
     Q_FOREACH (const QJsonValue & val, obj["SyncKey"].toObject()["List"].toArray()) {
-        syncKey.append(QString::number(val.toObject()["Key"].toInt()) + "|" + 
+        syncKey.append(QString::number(val.toObject()["Key"].toInt()) + "|" +
                 QString::number(val.toObject()["Val"].toInt()));
     }
     Q_EMIT skeyChanged(skey, syncKey);

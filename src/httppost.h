@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2015 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef HTTP_POST_H
@@ -7,7 +8,7 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 
-class HttpPost : public QObject 
+class HttpPost : public QObject
 {
     Q_OBJECT
 

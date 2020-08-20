@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef USER_OBJECT_H
@@ -6,7 +7,7 @@
 #include <QObject>
 #include <QString>
 
-class UserObject : public QObject 
+class UserObject : public QObject
 {
     Q_OBJECT
 
@@ -15,25 +16,25 @@ class UserObject : public QObject
     Q_PROPERTY(QString headImgUrl READ headImgUrl WRITE setHeadImgUrl NOTIFY headImgUrlChanged)
 
 public:
-    UserObject(const QString userName, 
-               const QString nickName, 
-               const QString headImgUrl, 
-               QObject* parent = nullptr) 
-      : QObject(parent) 
+    UserObject(const QString userName,
+               const QString nickName,
+               const QString headImgUrl,
+               QObject* parent = nullptr)
+      : QObject(parent)
     {
         m_userName = userName; m_nickName = nickName; m_headImgUrl = headImgUrl;
     }
 
     QString userName() const { return m_userName; }
-    void setUserName(const QString & userName) 
+    void setUserName(const QString & userName)
     { m_userName = userName; Q_EMIT userNameChanged(); }
 
     QString nickName() const { return m_nickName; }
-    void setNickName(const QString & nickName) 
+    void setNickName(const QString & nickName)
     { m_nickName = nickName; Q_EMIT nickNameChanged(); }
 
     QString headImgUrl() const { return m_headImgUrl; }
-    void setHeadImgUrl(const QString & headImgUrl) 
+    void setHeadImgUrl(const QString & headImgUrl)
     { m_headImgUrl = headImgUrl; Q_EMIT headImgUrlChanged(); }
 
 Q_SIGNALS:

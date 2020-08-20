@@ -5,7 +5,7 @@
 
 #include "httpget.h"
 
-class Cookie : public HttpGet 
+class Cookie : public HttpGet
 {
     Q_OBJECT
 
@@ -15,7 +15,7 @@ public:
 
     Q_INVOKABLE void get(QString redirect_uri);
     Q_INVOKABLE void getV2(QString redirect_uri);
-    
+
     static QString getTicket();
     static QString getUin();
     static QString getSid();

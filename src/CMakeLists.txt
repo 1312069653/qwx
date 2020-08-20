@@ -4,9 +4,9 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-add_executable(qwx 
+add_executable(qwx
     main.cpp
-	qtsingleapplication/qtsingleapplication.cpp
+    qtsingleapplication/qtsingleapplication.cpp
     qtsingleapplication/qtlocalpeer.cpp
     httpget.cpp
     qwxuuid.cpp

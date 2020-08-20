@@ -1,7 +1,6 @@
-/*                                                                              
- * Copyright (C) 2014 AnthonOS Open Source Community                               
- *               2014 - 2016 Leslie Zhai <xiang.zhai@i-soft.com.cn>
- */
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
+// Copyright (C) 2014 - 2016 Leslie Zhai <xiang.zhai@i-soft.com.cn>
+// Copyright (C) 2014 AOSC
 
 #include <QCoreApplication>
 #include <QLibraryInfo>
@@ -25,9 +24,9 @@ void I18N::setPath(const QString & path) { m_path = path; }
 void I18N::translate()
 {
     m_apTranslator.load(":/" + m_path + "/" + QLocale::system().name() + ".qm");
-    
-    m_qtTranslator.load("qt_" + QLocale::system().name(), 
-        QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+
+    m_qtTranslator.load("qt_" + QLocale::system().name(),
+                        QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 
     QCoreApplication::installTranslator(&m_apTranslator);
     QCoreApplication::installTranslator(&m_qtTranslator);

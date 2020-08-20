@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2016 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 import QtQuick 2.2
@@ -11,20 +12,20 @@ Rectangle {
     color: "#010510"
 
     Init {
-		id: initObj
-		onSkeyChanged: {
-			if (skey != "") {
-				Global.skey = skey;
+        id: initObj
+        onSkeyChanged: {
+            if (skey != "") {
+                Global.skey = skey;
             }
-			Global.deviceId = initObj.deviceId;
-			Global.loginUserName = initObj.loginUserName;
-			Global.loginNickName = initObj.loginNickName;
-			Global.initContactList = initObj.contactList;
-			Global.initSyncKey = syncKey;
-			rootWindowStackView.clear();
-			rootWindowStackView.push({item: Qt.resolvedUrl("NavigatorView.qml")});
-		}
-	}
+            Global.deviceId = initObj.deviceId;
+            Global.loginUserName = initObj.loginUserName;
+            Global.loginNickName = initObj.loginNickName;
+            Global.initContactList = initObj.contactList;
+            Global.initSyncKey = syncKey;
+            rootWindowStackView.clear();
+            rootWindowStackView.push({item: Qt.resolvedUrl("NavigatorView.qml")});
+        }
+    }
 
     QwxUUID {
         id: uuidObj
@@ -37,11 +38,11 @@ Rectangle {
             Global.sid = sid;
             Global.ticket = ticket;
             Global.v2 = isV2;
-			if (Global.v2) {
-				initObj.postV2(Global.uin, Global.sid, Global.ticket);
-			} else {
-				initObj.post(Global.uin, Global.sid, Global.ticket);
-			}
+            if (Global.v2) {
+                initObj.postV2(Global.uin, Global.sid, Global.ticket);
+            } else {
+                initObj.post(Global.uin, Global.sid, Global.ticket);
+            }
         }
         onUuidChanged: {
             rootWindowStackView.clear();

@@ -3,42 +3,42 @@
 #if QWX_DEBUG
 #include <QFile>
 #endif
-#include <QJsonDocument>                                                           
-#include <QJsonObject>                                                             
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QJsonArray>
 #include <time.h>
 
 #include "sync.h"
 #include "globaldeclarations.h"
 
-Sync::Sync(HttpPost* parent) 
-  : HttpPost(parent) 
+Sync::Sync(HttpPost* parent)
+  : HttpPost(parent)
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
 #endif
 }
 
-Sync::~Sync() 
+Sync::~Sync()
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
 #endif
 }
 
-void Sync::m_post(QString host, 
-                  QString uin, 
-                  QString sid, 
-                  QString skey, 
-                  QStringList syncKey) 
+void Sync::m_post(QString host,
+                  QString uin,
+                  QString sid,
+                  QString skey,
+                  QStringList syncKey)
 {
     QString ts = QString::number(time(NULL));
     QString url = host + WX_CGI_PATH + "webwxsync?sid=" + sid + "&skey=" + skey + "&r=" + ts;
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << url;
 #endif
-    QString json = "{\"BaseRequest\":{\"Uin\":" + uin + ",\"Sid\":\"" + sid + 
-        "\"},\"SyncKey\":{\"Count\":" + QString::number(syncKey.size()) + 
+    QString json = "{\"BaseRequest\":{\"Uin\":" + uin + ",\"Sid\":\"" + sid +
+        "\"},\"SyncKey\":{\"Count\":" + QString::number(syncKey.size()) +
         ",\"List\":[";
     for (int i = 0; i < syncKey.size(); i++) {
         if (i != 0)
@@ -53,7 +53,7 @@ void Sync::m_post(QString host,
     HttpPost::post(url, json, true);
 }
 
-void Sync::post(QString uin, QString sid, QString skey, QStringList syncKey) 
+void Sync::post(QString uin, QString sid, QString skey, QStringList syncKey)
 {
     m_post(WX_SERVER_HOST, uin, sid, skey, syncKey);
 }
@@ -63,7 +63,7 @@ void Sync::postV2(QString uin, QString sid, QString skey, QStringList syncKey)
     m_post(WX_V2_SERVER_HOST, uin, sid, skey, syncKey);
 }
 
-void Sync::finished(QNetworkReply* reply) 
+void Sync::finished(QNetworkReply* reply)
 {
     QString replyStr = QString(reply->readAll());
 #if QWX_DEBUG
@@ -76,13 +76,13 @@ void Sync::finished(QNetworkReply* reply)
         file.close();
     }
 #endif
-    QJsonDocument doc = QJsonDocument::fromJson(replyStr.toUtf8());                
-    if (!doc.isObject()) { Q_EMIT error(); return; }                                 
+    QJsonDocument doc = QJsonDocument::fromJson(replyStr.toUtf8());
+    if (!doc.isObject()) { Q_EMIT error(); return; }
     QJsonObject obj = doc.object();
     m_syncKey.clear();
     Q_FOREACH (const QJsonValue & val, obj["SyncKey"].toObject()["List"].toArray()) {
-        m_syncKey.append(QString::number(val.toObject()["Key"].toInt()) + "|" + 
+        m_syncKey.append(QString::number(val.toObject()["Key"].toInt()) + "|" +
                 QString::number(val.toObject()["Val"].toInt()));
-    }                                                                              
+    }
     Q_EMIT syncKeyChanged();
 }

@@ -6,7 +6,7 @@
 #include "httppost.h"
 #include "globaldeclarations.h"
 
-HttpPost::HttpPost(QObject* parent) 
+HttpPost::HttpPost(QObject* parent)
   : QObject(parent)
 {
 #if QWX_DEBUG
@@ -14,17 +14,17 @@ HttpPost::HttpPost(QObject* parent)
 #endif
 }
 
-HttpPost::~HttpPost() 
+HttpPost::~HttpPost()
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
 #endif
 }
 
-void HttpPost::post(QString url, QString str, bool needSetCookie) 
+void HttpPost::post(QString url, QString str, bool needSetCookie)
 {
     QNetworkRequest request(url);
-    
+
     // webwx use json content type as HTTP POST header
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     if (needSetCookie) {
@@ -37,17 +37,17 @@ void HttpPost::post(QString url, QString str, bool needSetCookie)
             request.setHeader(QNetworkRequest::CookieHeader, var);
         }
     }
-    
-    m_sslErrorConnection = connect(&m_nam, &QNetworkAccessManager::sslErrors, 
+
+    m_sslErrorConnection = connect(&m_nam, &QNetworkAccessManager::sslErrors,
             [this](QNetworkReply* reply, const QList<QSslError> & errors) {
                 reply->ignoreSslErrors(errors);
             });
-    m_finishConnection = connect(&m_nam, &QNetworkAccessManager::finished, 
+    m_finishConnection = connect(&m_nam, &QNetworkAccessManager::finished,
             [this](QNetworkReply* reply) {
                 this->finished(reply);
                 disconnect(m_sslErrorConnection);
                 disconnect(m_finishConnection);
             });
-    
+
     m_nam.post(request, str.toUtf8());
 }

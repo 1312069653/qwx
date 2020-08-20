@@ -1,12 +1,12 @@
 // Copyright (C) 2014 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
-#include <QJsonDocument>                                                           
+#include <QJsonDocument>
 #include <QJsonObject>
 
 #include "ipcity.h"
 #include "globaldeclarations.h"
 
-IpCity::IpCity(HttpGet* parent) 
+IpCity::IpCity(HttpGet* parent)
   : HttpGet(parent)
 {
 #if QWX_DEBUG
@@ -14,7 +14,7 @@ IpCity::IpCity(HttpGet* parent)
 #endif
 }
 
-IpCity::~IpCity() 
+IpCity::~IpCity()
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
@@ -23,7 +23,7 @@ IpCity::~IpCity()
 
 void IpCity::get() { HttpGet::get(IPLOOKUP_URL); }
 
-void IpCity::finished(QNetworkReply* reply) 
+void IpCity::finished(QNetworkReply* reply)
 {
     QString replyStr = QString(reply->readAll());
     QJsonDocument doc = QJsonDocument::fromJson(replyStr.toUtf8());

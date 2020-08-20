@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2015 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef MONITOR_H
@@ -5,7 +6,7 @@
 
 #include "httpget.h"
 
-class Monitor : public HttpGet 
+class Monitor : public HttpGet
 {
     Q_OBJECT
 
@@ -13,16 +14,16 @@ public:
     Monitor(HttpGet* parent = nullptr);
     ~Monitor();
 
-    Q_INVOKABLE void get(QString uin, 
-                         QString sid, 
-                         QString skey, 
-                         QString deviceId, 
+    Q_INVOKABLE void get(QString uin,
+                         QString sid,
+                         QString skey,
+                         QString deviceId,
                          QStringList syncKey);
-    Q_INVOKABLE void getV2(QString uin,                                              
-                         QString sid,                                              
-                         QString skey,                                             
-                         QString deviceId,                                         
-                         QStringList syncKey);
+    Q_INVOKABLE void getV2(QString uin,
+                           QString sid,
+                           QString skey,
+                           QString deviceId,
+                           QStringList syncKey);
 
 Q_SIGNALS:
     void noNewMsg();
@@ -32,11 +33,11 @@ protected:
     void finished(QNetworkReply* reply);
 
 private:
-    void m_get(QString host, 
-               QString uin, 
-               QString sid, 
-               QString skey, 
-               QString deviceId, 
+    void m_get(QString host,
+               QString uin,
+               QString sid,
+               QString skey,
+               QString deviceId,
                QStringList syncKey);
 };
 

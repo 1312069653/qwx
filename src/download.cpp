@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 // Copyright (C) 2014 - 2016 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #include <QFile>
@@ -6,8 +7,8 @@
 #include "download.h"
 #include "globaldeclarations.h"
 
-Download::Download(QObject* parent) 
-  : QObject(parent), 
+Download::Download(QObject* parent)
+  : QObject(parent),
     m_reply(nullptr)
 {
 #if QWX_DEBUG
@@ -15,7 +16,7 @@ Download::Download(QObject* parent)
 #endif
 }
 
-Download::~Download() 
+Download::~Download()
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
@@ -32,24 +33,24 @@ void Download::get(QString url, QString filePath, bool needCookie, bool isAppend
 
     // webwx download file need cookie
     if (needCookie && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream out(&file);                                                
+        QTextStream out(&file);
         QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(
             out.readAll().toUtf8());
-        QVariant var;                                                          
-        var.setValue(cookies);                                                 
-        request.setHeader(QNetworkRequest::CookieHeader, var);                 
+        QVariant var;
+        var.setValue(cookies);
+        request.setHeader(QNetworkRequest::CookieHeader, var);
     }
 
     m_file.setFileName(filePath);
     m_file.open(isAppend ?
-                QIODevice::WriteOnly | QIODevice::Append :
-                QIODevice::WriteOnly);
-    
-    m_sslErrorConnection = connect(&m_nam, &QNetworkAccessManager::sslErrors, 
+                    QIODevice::WriteOnly | QIODevice::Append :
+                    QIODevice::WriteOnly);
+
+    m_sslErrorConnection = connect(&m_nam, &QNetworkAccessManager::sslErrors,
             [this](QNetworkReply* reply, const QList<QSslError> & errors) {
                 reply->ignoreSslErrors(errors);
             });
-    
+
     m_reply = m_nam.get(request);
 
     connect(m_reply,
@@ -58,7 +59,7 @@ void Download::get(QString url, QString filePath, bool needCookie, bool isAppend
                 Q_UNUSED(code);
                 Q_EMIT error();
             });
-    m_downloadProgressConnection = connect(m_reply, &QNetworkReply::downloadProgress, 
+    m_downloadProgressConnection = connect(m_reply, &QNetworkReply::downloadProgress,
             [this](qint64 bytesReceived, qint64 bytesTotal) {
                 if (bytesTotal)
                     Q_EMIT downloaded(bytesReceived / bytesTotal);

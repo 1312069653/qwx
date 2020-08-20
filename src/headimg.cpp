@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2016 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #include <QFile>
@@ -6,10 +7,10 @@
 #include "headimg.h"
 #include "globaldeclarations.h"
 
-HeadImg::HeadImg(QObject* parent) 
-  : QObject(parent), 
+HeadImg::HeadImg(QObject* parent)
+  : QObject(parent),
     m_v2(false),
-    m_userName(""), 
+    m_userName(""),
     m_headImgUrl(""),
     m_filePath(""),
     m_skey("")
@@ -19,7 +20,7 @@ HeadImg::HeadImg(QObject* parent)
 #endif
 }
 
-HeadImg::~HeadImg() 
+HeadImg::~HeadImg()
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
@@ -34,30 +35,36 @@ void HeadImg::setV2(bool v2)
     }
 }
 
-void HeadImg::setUserName(const QString & userName) 
+void HeadImg::setUserName(const QString & userName)
 {
     m_userName = userName;
     Q_EMIT userNameChanged();
-    m_v2 ? m_get(WX_V2_SERVER_HOST) : m_get(WX_SERVER_HOST);
+    if (m_v2)
+        m_get(WX_V2_SERVER_HOST);
+    else
+        m_get(WX_SERVER_HOST);
 }
 
-void HeadImg::setHeadImgUrl(const QString & headImgUrl) 
+void HeadImg::setHeadImgUrl(const QString & headImgUrl)
 {
     m_headImgUrl = headImgUrl;
     Q_EMIT headImgUrlChanged();
-    m_v2 ? m_get(WX_V2_SERVER_HOST) : m_get(WX_SERVER_HOST);
+    if (m_v2)
+        m_get(WX_V2_SERVER_HOST);
+    else
+        m_get(WX_SERVER_HOST);
 }
 
-void HeadImg::m_get(QString host) 
+void HeadImg::m_get(QString host)
 {
-    QString url = host + (m_headImgUrl.contains("webwxgeticon") ? 
+    QString url = host + (m_headImgUrl.contains("webwxgeticon") ?
         WX_CGI_PATH + "webwxgeticon?username=" + m_userName :
         WX_CGI_PATH + "webwxgetheadimg?username=" + m_userName) + "&skey=" + m_skey;
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << url;
 #endif
     QString headImgPath = QWXDIR + "/" + m_userName;
-    if (QFile::exists(headImgPath)) { 
+    if (QFile::exists(headImgPath)) {
         m_filePath = "file://" + QWXDIR + "/" + m_userName;
         Q_EMIT filePathChanged();
     } else {

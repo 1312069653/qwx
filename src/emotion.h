@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2015 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef EMOTION_H
@@ -7,7 +8,7 @@
 
 class EmotionObject;
 
-class Emotion : public QAbstractListModel 
+class Emotion : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -15,7 +16,7 @@ public:
     enum EmotionRoles {
         TitleRole = Qt::UserRole + 1,
         NameRole
-    };                                                                          
+    };
 
     explicit Emotion(QObject* parent = nullptr);
     ~Emotion();
@@ -25,16 +26,16 @@ public:
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const; 
 
-    void addEmotion(const EmotionObject & emotion);                    
+    void addEmotion(const EmotionObject & emotion);
 
-protected:                                                                         
+protected:
     QHash<int, QByteArray> roleNames() const;
 
 private:
     QList<EmotionObject> m_emotions;
 };
 
-class EmotionObject 
+class EmotionObject
 {
 public:
     EmotionObject(const QString & title, const QString & name)

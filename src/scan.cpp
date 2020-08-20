@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #include <time.h>
@@ -5,7 +6,7 @@
 #include "scan.h"
 #include "globaldeclarations.h"
 
-Scan::Scan(HttpGet* parent) 
+Scan::Scan(HttpGet* parent)
   : HttpGet(parent)
 {
 #if QWX_DEBUG
@@ -13,16 +14,16 @@ Scan::Scan(HttpGet* parent)
 #endif
 }
 
-Scan::~Scan() 
+Scan::~Scan()
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
 #endif
 }
 
-void Scan::get(QString uuid, QString tip) 
+void Scan::get(QString uuid, QString tip)
 {
-    QString url = LOGIN_SERVER_HOST + WX_CGI_PATH + "login?uuid=" + uuid + 
+    QString url = LOGIN_SERVER_HOST + WX_CGI_PATH + "login?uuid=" + uuid +
         "&tip=" + tip + "&_=" + QString::number(time(NULL));
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << url;
@@ -30,7 +31,7 @@ void Scan::get(QString uuid, QString tip)
     HttpGet::get(url);
 }
 
-void Scan::finished(QNetworkReply* reply) 
+void Scan::finished(QNetworkReply* reply)
 {
     QString replyStr(reply->readAll());
     QString qrredirect_uriStr = "window.redirect_uri=\"";
@@ -52,7 +53,7 @@ void Scan::finished(QNetworkReply* reply)
     if (replyStr.contains("window.code=200;")) {
         index = replyStr.indexOf(qrredirect_uriStr) + qrredirect_uriStr.size();
         if (index == -1) {
-            qWarning() << "ERROR:" << __PRETTY_FUNCTION__ << 
+            qWarning() << "ERROR:" << __PRETTY_FUNCTION__ <<
                 "redirect_uri not found!";
             Q_EMIT scanedAndConfirmed(redirect_uriStr);
             return;
@@ -62,6 +63,6 @@ void Scan::finished(QNetworkReply* reply)
         qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << redirect_uriStr;
 #endif
         Q_EMIT scanedAndConfirmed(redirect_uriStr);
-        return; 
+        return;
     }
 }

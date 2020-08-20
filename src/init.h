@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef INIT_H
@@ -5,11 +6,10 @@
 
 #include "httppost.h"
 
-class Init : public HttpPost 
+class Init : public HttpPost
 {
     Q_OBJECT
 
-    
     Q_PROPERTY(QString deviceId READ deviceId NOTIFY deviceIdChanged)
     Q_PROPERTY(QString loginUserName READ loginUserName NOTIFY loginUserNameChanged)
     Q_PROPERTY(QString loginNickName READ loginNickName NOTIFY loginNickNameChanged)

@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2015 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef HTTP_GET_H
@@ -8,7 +9,7 @@
 #include <QNetworkReply>
 #include <QNetworkCookie>
 
-class HttpGet : public QObject 
+class HttpGet : public QObject
 {
     Q_OBJECT
 

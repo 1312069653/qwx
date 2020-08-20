@@ -1,7 +1,6 @@
-/*                                                                              
- * Copyright (C) 2014 AnthonOS Open Source Community                               
- *               2014 Leslie Zhai <xiang.zhai@i-soft.com.cn>                       
- */
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
+// Copyright (C) 2014 AOSC
+// Copyright (C) 2014 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef I18N_H
 #define I18N_H

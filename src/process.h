@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef PROCESS_H
@@ -14,7 +15,7 @@ class Process : public QObject
     Q_PROPERTY(QStringList arguments READ arguments WRITE setArguments NOTIFY argumentsChanged)
     Q_PROPERTY(QString dir READ dir WRITE setDir NOTIFY dirChanged)
 
-    public:
+public:
     Process(QObject *parent = 0);
     ~Process();
 

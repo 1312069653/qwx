@@ -5,7 +5,7 @@
 #include "statusnotify.h"
 #include "globaldeclarations.h"
 
-StatusNotify::StatusNotify(HttpPost* parent) 
+StatusNotify::StatusNotify(HttpPost* parent)
   : HttpPost(parent)
 {
 #if QWX_DEBUG
@@ -13,28 +13,28 @@ StatusNotify::StatusNotify(HttpPost* parent)
 #endif
 }
 
-StatusNotify::~StatusNotify() 
+StatusNotify::~StatusNotify()
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
 #endif
 }
 
-void StatusNotify::m_post(QString host, 
-                          QString uin, 
-                          QString sid, 
-                          QString skey, 
-                          QString deviceId, 
-                          QString userName) 
+void StatusNotify::m_post(QString host,
+                          QString uin,
+                          QString sid,
+                          QString skey,
+                          QString deviceId,
+                          QString userName)
 {
     QString ts = QString::number(time(NULL));
     QString url = host + WX_CGI_PATH + "webwxstatusnotify?skey=" + skey + "&r=" + ts;
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << url;
 #endif
-    QString json = "{\"BaseRequest\":{\"Uin\":" + uin + ",\"Sid\":\"" + sid 
+    QString json = "{\"BaseRequest\":{\"Uin\":" + uin + ",\"Sid\":\"" + sid
         + "\",\"Skey\":\"\",\"DeviceID\":\"" + deviceId + "\"},\"Code\":3,"
-        "\"FromUserName\":\"" + userName + "\",\"ToUserName\":\"" + userName 
+        "\"FromUserName\":\"" + userName + "\",\"ToUserName\":\"" + userName
         + "\",\"ClientMsgId\":\"" + ts + "\"}";
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__ << json;
@@ -42,11 +42,11 @@ void StatusNotify::m_post(QString host,
     HttpPost::post(url, json, true);
 }
 
-void StatusNotify::post(QString uin, 
-                        QString sid, 
-                        QString skey, 
-                        QString deviceId, 
-                        QString userName) 
+void StatusNotify::post(QString uin,
+                        QString sid,
+                        QString skey,
+                        QString deviceId,
+                        QString userName)
 {
     m_post(WX_SERVER_HOST, uin, sid, skey, deviceId, userName);
 }
@@ -60,7 +60,7 @@ void StatusNotify::postV2(QString uin,
     m_post(WX_V2_SERVER_HOST, uin, sid, skey, deviceId, userName);
 }
 
-void StatusNotify::finished(QNetworkReply* reply) 
+void StatusNotify::finished(QNetworkReply* reply)
 {
     QString replyStr = QString(reply->readAll());
 #if QWX_DEBUG

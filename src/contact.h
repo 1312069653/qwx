@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2014 - 2015 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 #ifndef CONTACT_H
@@ -6,7 +7,7 @@
 #include "httppost.h"
 #include "userobject.h"
 
-class Contact : public HttpPost 
+class Contact : public HttpPost
 {
     Q_OBJECT
 

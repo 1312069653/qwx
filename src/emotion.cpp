@@ -6,7 +6,7 @@
 #include "emotion.h"
 
 Emotion::Emotion(QObject* parent)
-  : QAbstractListModel(parent) 
+  : QAbstractListModel(parent)
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
@@ -24,39 +24,39 @@ Emotion::Emotion(QObject* parent)
     }
 }
 
-Emotion::~Emotion() 
+Emotion::~Emotion()
 {
 #if QWX_DEBUG
     qDebug() << "DEBUG:" << __PRETTY_FUNCTION__;
 #endif
 }
 
-QString Emotion::contentWithImage(QString content) 
+QString Emotion::contentWithImage(QString content)
 {
     for (int i = 0; i < m_emotions.size(); i++) {
         QString replace = "[" + m_emotions[i].title() + "]";
         if (content.contains(replace)) {
-            content.replace(replace, 
-                    "<img src=\"../images/" + m_emotions[i].name() + "\">");
+            content.replace(replace,
+                            "<img src=\"../images/" + m_emotions[i].name() + "\">");
         }
     }
     return content;
 }
 
-void Emotion::addEmotion(const EmotionObject & emotion) 
+void Emotion::addEmotion(const EmotionObject & emotion)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_emotions << emotion;
     endInsertRows();
 }
 
-int Emotion::rowCount(const QModelIndex & parent) const 
+int Emotion::rowCount(const QModelIndex & parent) const
 {
     Q_UNUSED(parent);
     return m_emotions.size();
 }
 
-QVariant Emotion::data(const QModelIndex & index, int role) const 
+QVariant Emotion::data(const QModelIndex & index, int role) const
 {
     if (index.row() < 0 || index.row() >= m_emotions.size())
         return QVariant();
@@ -66,10 +66,10 @@ QVariant Emotion::data(const QModelIndex & index, int role) const
         return emotion.title();
     else if (role == NameRole)
         return emotion.name();
-    return QVariant(); 
+    return QVariant();
 }
-                                                                                
-QHash<int, QByteArray> Emotion::roleNames() const 
+
+QHash<int, QByteArray> Emotion::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[TitleRole] = "title";

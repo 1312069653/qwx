@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Leslie Zhai <zhaixiang@loongson.cn>
 // Copyright (C) 2015 Leslie Zhai <xiang.zhai@i-soft.com.cn>
 
 .pragma library
@@ -28,7 +29,7 @@ function monitorNewMsg()
 
 
 var styles={
-	navbar: {
-		horizontalMargin:12
-	}
+    navbar: {
+        horizontalMargin:12
+    }
 }
